@@ -1,0 +1,28 @@
+# IAR 编译输出目录
+Debug/
+Release/
+
+# IAR 配置目录
+settings/
+
+# IAR 缓存文件
+*.dep
+*.log
+*.tmp
+*.pbi
+*.pbd
+*.browse
+
+# 输出文件
+*.out
+*.map
+
+# 备份文件
+*.bak
+
+# 系统文件
+Thumbs.db
+Desktop.ini
+
+# VSCode（如果以后用）
+.vscode/
