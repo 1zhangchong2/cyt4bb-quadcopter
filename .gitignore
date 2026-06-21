@@ -1,5 +1,7 @@
 # IAR 配置目录
 settings/
+# IAR 设置目录
+settings/
 
 # 编译输出目录
 Debug/
