@@ -77,8 +77,8 @@ int main(void)
     // ---------- 模块 2：SBUS 遥控接收（UART4，100000 bps） ----------
     //   硬件：UART4_RX = P14_0，由 zf_device_uart_receiver 内部配置
     //   软件：Control_SbusInit() 仅清空期望姿态与油门，Control_Setpoint() 由外部写入
-    uart_receiver_init();
-    Control_SbusInit();
+    //uart_receiver_init();
+   // Control_SbusInit();
 
     // ---------- 控制循环初始化（PID + 电机 PWM + armed 安全锁） ----------
     Control_Init();
