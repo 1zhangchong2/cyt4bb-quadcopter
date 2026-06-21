@@ -1,28 +1,60 @@
-# IAR 编译输出目录
-Debug/
-Release/
+# IAR Build Output Directories（匹配 Debug_m7_0、Release 等）
+**/Debug*/
+**/Release*/
+**/settings/
+**/BrowseInfo/
+**/Obj/
+**/List/
+**/Exe/
 
-# IAR 配置目录
-settings/
-
-# IAR 缓存文件
-*.dep
-*.log
-*.tmp
+# IAR Ninja Build Files
 *.pbi
+*.xcl
 *.pbd
-*.browse
+*.pbw
+*.ninja_deps
+*.ninja_log
+*.ninja
+build.ninja
+*_build_cache
 
-# 输出文件
+# IAR Build Intermediate Files
+*.pbi.dep
+*.o.rsp
+*.dep
+
+# IAR Debugger Files
+*.ewd
+*.crf
+*.wsdt
+*.crun
+*.dnx
+*.dbgdt
+*.driver.xcl
+*.general.xcl
+*.cspy.bat
+*.cspy.ps1
+
+# Object/Executable Files
+*.o
+*.obj
 *.out
+*.hex
+*.bin
+*.elf
+*.sim
 *.map
+*.lst
+*.srec
 
-# 备份文件
-*.bak
+# Library Files
+*.a
+*.lib
 
-# 系统文件
+# TRAE Internal Files
+.trae/
+
+# OS Files
 Thumbs.db
-Desktop.ini
-
-# VSCode（如果以后用）
-.vscode/
+.DS_Store
+desktop.ini

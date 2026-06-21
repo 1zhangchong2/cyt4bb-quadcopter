@@ -33,18 +33,18 @@ void All_pid_init(void) {
     PID_Init(&pid_angle_yaw,   0.0f, 0.0f,  0.0f, 100.0f);
 
     // ---------- 角速度内环（增量式 PID）----------
-    PID_Init(&pid_rate_roll,   0.2f, 0.01f, 0.0f, 500.0f);
+    PID_Init(&pid_rate_roll,   0.0f, 0.00f, 0.0f, 500.0f);
     PID_Init(&pid_rate_pitch,  0.0f, 0.0f,  0.0f, 500.0f);
     PID_Init(&pid_rate_yaw,    0.0f, 0.0f,  0.0f, 300.0f);
 
     // ---------- 高度环（位置式 PID：TOF → 油门修正）----------
     //   输入单位 mm，输出单位 PWM 占空比偏移量（±limit 范围）
-    PID_Init(&pid_height,      0.1f, 0.0f,  0.0f, 200.0f);
+    PID_Init(&pid_height,      0.0f, 0.0f,  0.0f, 200.0f);
 
     // ---------- 水平位置环（位置式 PID：光流累计位移 → 期望姿态）----------
     //   输入单位 "光流累计计数"，输出单位 °（叠加到期望 pitch/roll）
-    PID_Init(&pid_pos_x,       0.01f, 0.0f, 0.0f, 15.0f);
-    PID_Init(&pid_pos_y,       0.01f, 0.0f, 0.0f, 15.0f);
+    PID_Init(&pid_pos_x,       0.00f, 0.0f, 0.0f, 15.0f);
+    PID_Init(&pid_pos_y,       0.00f, 0.0f, 0.0f, 15.0f);
 }
 
 // 位置式 PID（用于角度外环）
