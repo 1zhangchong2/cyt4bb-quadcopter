@@ -83,7 +83,7 @@ int main(void)
     // ---------- 控制循环初始化（PID + 电机 PWM + armed 安全锁） ----------
     Control_Init();
     Motor_Set(0, 0, 0, 0);
-    system_delay_ms(500);
+    system_delay_ms(550);
 
     // ========================================================
     //  ⚠️  安全提示：上电后 armed = 0，throttle 自动截断为 0。
