@@ -1,0 +1,75 @@
+﻿===== MARKDOWN SUMMARY TABLE =====
+| 文件名 | BOM | 行尾 | 有效 UTF-8 | U+FFFD 数 |
+|---|---|---|---|---|
+| zita.c | 是(EFBBBF) | CRLF:111/LF:0/CR:0 | 是 | 0 |
+| main_cm7_0.c | 是(EFBBBF) | CRLF:84/LF:0/CR:0 | 是 | 0 |
+| control.c | 是(EFBBBF) | CRLF:71/LF:0/CR:0 | 是 | 0 |
+| motor.c | 是(EFBBBF) | CRLF:31/LF:0/CR:0 | 是 | 0 |
+| init.c | 是(EFBBBF) | CRLF:43/LF:0/CR:0 | 是 | 0 |
+
+===== PER-FILE SAMPLES =====
+
+-- 前 5 行 (每行前 40 字符) --
+  L1: #include "zf_common_headfile.h"
+  L2: #include "zita.h"
+  L3: float acc_filt[3] = {0};// 加速度滤波数组
+  L4: float gyro_filt[3] = {0};
+  L5: #define ACC_LPF_ALPHA 0.2f
+-- 后 5 行 --
+  L108:     attitude.yaw    = atan2f(2.0f*q1*q2 
+  L109: }
+  L110: 
+  L111: 
+  L112: 
+
+-- 前 5 行 (每行前 40 字符) --
+  L1: /***************************************
+  L2: * CYT4BB Opensourec Library（简称 CYT4BB 开源
+  L3: * Copyright (c) 2022 SEEKFREE 逐飞科技
+  L4: *
+  L5: * 本文件是 CYT4BB 开源库的一部分
+-- 后 5 行 --
+  L81:     }
+  L82: }
+  L83: 
+  L84: // **************************** 用户代码结束 *
+  L85: 
+
+-- 前 5 行 (每行前 40 字符) --
+  L1: /*
+  L2:  * control.c
+  L3:  *
+  L4:  *  Created on: 2025年12月9日
+  L5:  *      Author: LST
+-- 后 5 行 --
+  L68:     printf("M1:%.1f M2:%.1f M3:%.1f M4:%
+  L69:            m1, m2, m3, m4, torque_roll, 
+  L70:     //MotorMixer(throttle, 0.0f, 0.0f, 0
+  L71: }
+  L72: 
+
+-- 前 5 行 (每行前 40 字符) --
+  L1: #include "zf_common_headfile.h"
+  L2: #include "motor.h"
+  L3: static uint16_t map_to_pwm_duty(uint16_t
+  L4:     if (value > 1000) value = 1000;
+  L5:     return value;
+-- 后 5 行 --
+  L28: 
+  L29:     #define LIMIT(x) ((x) < 0 ? 0 : ((x)
+  L30:     Motor_Set((uint16_t)LIMIT(m1), (uint
+  L31:               (uint16_t)LIMIT(m3), (uint
+  L32: }
+
+-- 前 5 行 (每行前 40 字符) --
+  L1: /*
+  L2:  * init.c
+  L3:  *
+  L4:  *  Created on: 2025年12月9日
+  L5:  *      Author: LST
+-- 后 5 行 --
+  L40: 
+  L41:     //中断初始化代码
+  L42:     pit_init(PIT_CH0, 10000);
+  L43: }
+  L44: #endif
