@@ -34,10 +34,10 @@ void MotorMixer(float throttle, float roll, float pitch, float yaw) {
     // X 型四旋翼混控公式
     //   M1 右前 (CW)  M2 左前 (CCW)
     //   M3 左后 (CW)  M4 右后 (CCW)
-    float raw_m1 = throttle + roll - pitch + yaw;
-    float raw_m2 = throttle + roll + pitch - yaw;
-    float raw_m3 = throttle - roll + pitch + yaw;
-    float raw_m4 = throttle - roll - pitch - yaw;
+    float raw_m1 = throttle + roll - pitch + yaw;//(TCPWM_CH30_P10_2)
+    float raw_m2 = throttle + roll + pitch - yaw;//(TCPWM_CH57_P17_4)
+    float raw_m3 = throttle - roll + pitch + yaw;//(TCPWM_CH11_P05_2)
+    float raw_m4 = throttle - roll - pitch - yaw;//(TCPWM_CH20_P08_1)
 
     // 先钳制 [0,1000]（PWM 驱动无法接受负值 / 超量程值）
     uint16_t d1 = clamp_pwm_duty(raw_m1);

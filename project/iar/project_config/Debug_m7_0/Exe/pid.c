@@ -33,9 +33,9 @@ void All_pid_init(void) {
     PID_Init(&pid_angle_yaw,   0.0f, 0.0f,  0.0f, 100.0f);
 
     // ---------- 角速度内环（增量式 PID）----------
-    PID_Init(&pid_rate_roll,   0.1f, 0.00f, 0.0f, 500.0f);
-    PID_Init(&pid_rate_pitch,  0.1f, 0.0f,  0.0f, 500.0f);
-    PID_Init(&pid_rate_yaw,    0.1f, 0.0f,  0.0f, 300.0f);
+    PID_Init(&pid_rate_roll,   0.1f, 0.05f, 0.0f, 500.0f);
+    PID_Init(&pid_rate_pitch,  0.1f, 0.05f,  0.0f, 500.0f);
+    PID_Init(&pid_rate_yaw,    0.1f, 0.05f,  0.0f, 300.0f);
 
     // ---------- 高度环（位置式 PID：TOF → 油门修正）----------
     //   输入单位 mm，输出单位 PWM 占空比偏移量（±limit 范围）

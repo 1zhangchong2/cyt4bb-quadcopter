@@ -43,7 +43,7 @@ static float sbus_des_pitch = 0.0f;
 static float sbus_des_yaw   = 0.0f;
 
 // ---------- 高度环 / 位置环：目标点与"是否有外部设定"标记 ----------
-static int32_t  des_height_mm   = 1500;   // 默认 1.5 m；可由 Control_SetHeight 覆盖
+static int32_t  des_height_mm   = 1300;   // 默认 1.3 m；可由 Control_SetHeight 覆盖
 static int32_t  des_pos_x       = 0;
 static int32_t  des_pos_y       = 0;
 static uint8_t  height_locked   = 0;      // 0=未锁，1=已在 Control_Loop 内使用当前高度锁一次
@@ -97,7 +97,7 @@ void Control_Init(void) {
     // 初始化时"未锁高度/位置"，由第一次有效 TOF/光流数据自动锁定
     height_locked = 0;
     pos_locked    = 0;
-    des_height_mm = 1500;
+    des_height_mm = 1300;
     des_pos_x = 0;
     des_pos_y = 0;
 
@@ -146,7 +146,7 @@ void Control_SetPos(int32_t des_pos_x_, int32_t des_pos_y_) {
 
 // ---------- 控制循环（每 10 ms 调用一次） ----------
 void Control_Loop(void) {
-    // ---------------- 高度环（TOF → 油门修正） ----------------
+/*    // ---------------- 高度环（TOF → 油门修正） ----------------
     float height_out = 0.0f;
     if (armed && sensor_pack_tof_ready()) {
         // 第一次进入：自动把当前高度锁定为目标，避免"从 0 猛然爬升到默认 1500mm"
@@ -162,8 +162,11 @@ void Control_Loop(void) {
         height_out = 0.0f;
     }
     last_height_out = height_out;
-
-    // ---------------- 位置环（光流 → 期望 pitch / roll） ----------------
+*/
+  // 不使用高度环
+float height_out = 0.0f;
+last_height_out = 0.0f;
+/*    // ---------------- 位置环（光流 → 期望 pitch / roll） ----------------
     float pos_x_out = 0.0f;   // 作为"期望 pitch"的偏移
     float pos_y_out = 0.0f;   // 作为"期望 roll" 的偏移
 
@@ -184,14 +187,23 @@ void Control_Loop(void) {
     }
     last_pos_x_out = pos_x_out;
     last_pos_y_out = pos_y_out;
+*/
+// 不使用光流位置环
+float pos_x_out = 0.0f;
+float pos_y_out = 0.0f;
 
+last_pos_x_out = 0.0f;
+last_pos_y_out = 0.0f;
     // ---------------- 期望姿态（SBUS 位置偏移叠加） ----------------
     //   若 SBUS 已经传入姿态偏移，直接把位置环输出叠加其上；
     //   否则位置环输出作为"唯一的期望姿态"来让机体保持水平。
-    const float desired_roll  = sbus_des_roll  + pos_y_out;
-    const float desired_pitch = sbus_des_pitch + pos_x_out;
-    const float desired_yaw   = sbus_des_yaw;
-
+    //const float desired_roll  = sbus_des_roll  + pos_y_out;
+    //const float desired_pitch = sbus_des_pitch + pos_x_out;
+    //const float desired_yaw   = sbus_des_yaw;
+    const float desired_roll  = 0.0f;
+    const float desired_pitch = 0.0f;
+    const float desired_yaw   = 0.0f;
+/*
     // ---------------- 油门：基础 + 高度环修正 ----------------
     if (armed) {
         float base = 0.0f;
@@ -214,6 +226,8 @@ void Control_Loop(void) {
         throttle = 0.0f;
     }
 
+*/
+    throttle = 700;
     // ---------------- 角度外环（位置式 PID） ----------------
     const float target_rate_roll  = PID_Realize(&pid_angle_roll,  attitude.roll,  desired_roll);
     const float target_rate_pitch = PID_Realize(&pid_angle_pitch, attitude.pitch, desired_pitch);
@@ -229,7 +243,7 @@ void Control_Loop(void) {
     //MotorMixer(throttle, torque_roll, torque_pitch, torque_yaw);
    //MotorMixer(throttle, torque_roll, torque_pitch, torque_yaw);
        //MotorMixer(throttle, torque_roll, torque_pitch, torque_yaw);
-    // ---------------- 调试缓存 & 10 Hz 打印 ----------------
+/*    // ---------------- 调试缓存 & 10 Hz 打印 ----------------
     last_attitude[0] = attitude.roll;
     last_attitude[1] = attitude.pitch;
     last_attitude[2] = attitude.yaw;
@@ -244,11 +258,11 @@ void Control_Loop(void) {
     if (debug_counter >= 10) {
         debug_counter = 0;
         Control_Print();
-    }
+    }*/
 }
 
 // ---------- 对外的调试输出（10 Hz 自动调用；也可手动） ----------
-void Control_Print(void) {
+/*void Control_Print(void) {
     printf(
         "[CTL] Armed=%s R:%.1f P:%.1f Y:%.1f | desR:%.1f desP:%.1f desY:%.1f | "
         "TOF:%u mm hgt_out:%.1f | fx:%.1f fy:%.1f | TqR:%.1f TqP:%.1f TqY:%.1f | "
@@ -260,4 +274,4 @@ void Control_Print(void) {
         last_pos_x_out, last_pos_y_out,
         last_torque[0], last_torque[1], last_torque[2],
         motor_out_m1, motor_out_m2, motor_out_m3, motor_out_m4);
-}
+}*/

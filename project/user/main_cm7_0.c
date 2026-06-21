@@ -50,7 +50,7 @@
 // ========================= 用户可调参数 =========================
 #define PIT_NUM     (PIT_CH0)    // 周期中断通道（10 ms 节拍）
 #define PIT_PERIOD  (10)         // 周期（ms）
-#define LED1        (P19_0)      // 心跳 LED（TOF 已映射到 P06_6/P06_7，与 LED1 无冲突）
+#define LED1        (P06_2)      // 心跳 LED
 // ===============================================================
 
 volatile uint8_t pit_state = 0;
@@ -92,7 +92,7 @@ int main(void)
     //           if (uart_receiver.channel[4] > 1500) Control_Arm(1);
     //           else                                    Control_Arm(0);
     // ========================================================
-    // Control_Arm(1);   // TODO: 仅在调试架上手动解锁
+     Control_Arm(1);   // TODO: 仅在调试架上手动解锁
 
     while (1)
     {

@@ -44,7 +44,7 @@ uint8 sensor_pack_init(void)
     uint8 fail = 0;
 
     // 1. DL1B (VL53L1X) 激光测距 - 软件 I²C
-    //    引脚：SCL = P06_6, SDA = P06_7, XS = P07_2 (与 zf_device_dl1b.h 一致)
+    //    引脚：SCL = (P19_0) , SDA = (P19_1), XS = P07_2 
     if (dl1b_init() != 0)
     {
         printf("[SENSOR] TOF init FAIL (check I2C wiring)\r\n");

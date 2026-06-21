@@ -30,14 +30,13 @@
 //   - Control_Arm(0): 立即将 throttle 清零，MotorMixer 输出 0
 //   - Control_Arm(1): 油门从 hover_throttle 按高度环修正量变化
 //   - 通过 SBUS 通道或上位机指令切换
-#define MOTOR_THROTTLE_MAX     (600.0f)   // 绝对油门上限（保护）
+#define MOTOR_THROTTLE_MAX     (1000.0f)   // 绝对油门上限（保护）
 #define MOTOR_THROTTLE_STEP    (2.0f)     // 无 SBUS 时 10 ms 递增步进
 
 // ===================== 悬停油门（可调） =====================
 //   当高度环/位置环生效时，以该值为 "基础油门"，
 //   pid_height 输出作为修正量叠加；高度环失能时退化为自动递增。
-#define MOTOR_HOVER_THROTTLE   (300.0f)   // 典型 250 g 四旋翼在 8.4 V 下的悬停点（仅参考）
-
+#define MOTOR_HOVER_THROTTLE   (800.0f)   // 
 // ===================== SBUS 通道映射（可在 main.c 中调整） =====================
 //   SBUS 每个通道范围 172 ~ 1811（中间约 992）
 //   这里给出一个典型的 6 通道遥控映射定义：
