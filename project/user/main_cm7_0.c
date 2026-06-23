@@ -72,7 +72,7 @@ int main(void)
 
     // ---------- 模块 1：外部传感器（TOF + PMW3901） ----------
     //   内部：dl1b_init() + pmw3901_init()，失败会以返回值标记
-    (void)sensor_pack_init();
+    //(void)sensor_pack_init();
 
     // ---------- 模块 2：SBUS 遥控接收（UART4，100000 bps） ----------
     //   硬件：UART4_RX = P14_0，由 zf_device_uart_receiver 内部配置
@@ -104,7 +104,7 @@ int main(void)
             imu660ra();
 
             // 2) 外部传感器：TOF + 光流（内部判断 finsh_flag / 最小周期）
-            sensor_pack_update();
+            //sensor_pack_update();
 
             // 3) 控制循环（双环 PID + MotorMixer + 10 Hz 调试打印）
             Control_Loop();
