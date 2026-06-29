@@ -96,6 +96,7 @@ void Control_Init(void) {
 
     Motor_Init();
     Motor_Set(0, 0, 0, 0);
+    system_delay_ms(550);
 }
 
 // ---------- SBUS 初始化 ----------
@@ -139,22 +140,40 @@ void Control_SetPos(int32_t des_pos_x_, int32_t des_pos_y_) {
 
 // ---------- 控制循环（每 10 ms 调用一次） ----------
 //  当前模式：固定油门 + 姿态双环（无高度环、无光流位置环、无遥控）
-//  只做"保持水平"这件事，油门由 armed 控制开/关
 void Control_Loop(void) {
+    static float roll_bias = 0, pitch_bias = 0;
+    static uint8_t bias_captured = 0;
+    if (!bias_captured) {
+        roll_bias  = attitude.roll;
+        pitch_bias = attitude.pitch;
+        bias_captured = 1;
+    }
+    float roll_comp  = attitude.roll  - roll_bias;
+    float pitch_comp = attitude.pitch - pitch_bias;
     // ---- 期望姿态：目标水平 ----
     const float des_roll  = 0.0f;
     const float des_pitch = 0.0f;
     const float des_yaw   = 0.0f;
 
     // ---- 角度外环（位置式 PID）：姿态误差 → 目标角速度 ----
-    const float target_rate_roll  = PID_Realize(&pid_angle_roll,  attitude.roll,  des_roll);
-    const float target_rate_pitch = PID_Realize(&pid_angle_pitch, attitude.pitch, des_pitch);
-    const float target_rate_yaw   = PID_Realize(&pid_angle_yaw,   attitude.yaw,   des_yaw);
-
+    //const float target_rate_roll  = PID_Realize(&pid_angle_roll,  roll_comp,  des_roll);
+    //const float target_rate_pitch = PID_Realize(&pid_angle_pitch, pitch_comp, des_pitch);
+    //const float target_rate_yaw   = PID_Realize(&pid_angle_yaw,   attitude.yaw,   des_yaw);
+    static int step_cnt = 0;
+    step_cnt++;
+    float target_rate_roll = 0;
+    if (step_cnt > 200 && step_cnt < 300) 
+    {target_rate_roll = 100.0f;   // 100°/s 阶跃
+    } else if (step_cnt >= 300) 
+    {step_cnt = 0;
+    }
+    float target_rate_pitch = 0;
+    float target_rate_yaw   = 0;
+    //float target_rate_roll  = 0;
     // ---- 角速度内环（增量式 PID）：角速度误差 → 扭矩 ----
-    torque_roll  = PID_Increase(&pid_rate_roll,  gyro_filt[0], target_rate_roll);
-    torque_pitch = PID_Increase(&pid_rate_pitch, gyro_filt[1], target_rate_pitch);
-    torque_yaw   = PID_Increase(&pid_rate_yaw,   gyro_filt[2], target_rate_yaw);
+    torque_roll  = PID_Realize(&pid_rate_roll,  gyro_filt[0], target_rate_roll);
+    torque_pitch = PID_Realize(&pid_rate_pitch, gyro_filt[1], target_rate_pitch);
+    torque_yaw   = PID_Realize(&pid_rate_yaw,   gyro_filt[2], target_rate_yaw);
 
     // ---- 油门：直接固定 600（暂不用安全锁，后续接入遥控再恢复 armed） ----
     /*
@@ -164,20 +183,12 @@ void Control_Loop(void) {
         throttle = 0.0f;
     }
     */
-    throttle = 700.0f;
-
-    // ---- 混控 → 四路 PWM ----
+    // ---- 混控 → 四路 PWM
+    throttle = 600.0f;
     MotorMixer(throttle, torque_roll, torque_pitch, torque_yaw);
-
-    // ---- 10 Hz 串口调试打印 ----
-    debug_counter++;
-    if (debug_counter >= 10) {
-        debug_counter = 0;
-        printf("[CTL] R:%+.1f P:%+.1f Y:%+.1f  "
-               "TqR:%+6.1f TqP:%+6.1f TqY:%+6.1f  "
-               "M1:%.0f M2:%.0f M3:%.0f M4:%.0f\r\n",
-               attitude.roll, attitude.pitch, attitude.yaw,
-               torque_roll, torque_pitch, torque_yaw,
-               motor_out_m1, motor_out_m2, motor_out_m3, motor_out_m4);
-    }
+    printf("%.1f,%.1f\r\n", gyro_filt[0], target_rate_roll);
+    //printf("%.1f\r\n", gyro_filt[0]);
+    //printf("R:%.1f P:%.1f Y:%.1f  tR:%.1f tP:%.1f tY:%.1f  thr:%.1f\r\n",
+          // attitude.roll, attitude.pitch, attitude.yaw,
+            //torque_roll, torque_pitch, torque_yaw, throttle);
 }

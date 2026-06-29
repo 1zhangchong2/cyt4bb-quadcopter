@@ -4,8 +4,6 @@
 #include "zf_common_headfile.h"
 
 // ====== 电机 PWM 通道定义 ======
-//   M1 右前(CW)  M2 左前(CCW)
-//   M3 左后(CW)  M4 右后(CCW)
 #define PWM_CH1  (TCPWM_CH30_P10_2)
 #define PWM_CH2  (TCPWM_CH57_P17_4)
 #define PWM_CH3  (TCPWM_CH11_P05_2)

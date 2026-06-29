@@ -30,15 +30,15 @@ void All_pid_init(void) {
     // ---------- 角度外环（位置式 PID）----------
     //   Kp: 角度每偏差 1°，向角速度内环输出 Kp °/s 的目标速率
     //   起始值偏保守，调试架上不抖动为宜；实际飞行再逐步增大
-    PID_Init(&pid_angle_roll,  0.0f, 0.00f, 0.0f, 300.0f);
-    PID_Init(&pid_angle_pitch, 0.0f, 0.00f, 0.0f, 300.0f);
+    PID_Init(&pid_angle_roll,  0.0f, 0.0f, 0.0f, 300.0f);
+    PID_Init(&pid_angle_pitch, 0.0f, 0.0f, 0.0f, 300.0f);
     PID_Init(&pid_angle_yaw,   0.0f, 0.00f, 0.0f, 100.0f);
 
     // ---------- 角速度内环（增量式 PID）----------
-    //   内环是增量式，Kp/I 保持较小值，防止振动放大o
-    PID_Init(&pid_rate_roll,   0.2f, 0.0f, 0.0f, 500.0f);
-    PID_Init(&pid_rate_pitch,  0.2f, 0.0f, 0.0f, 500.0f);
-    PID_Init(&pid_rate_yaw,    0.2f, 0.0f, 0.0f, 300.0f);
+    //   内环是增量式，Kp/I 保持较小值，防止振动放大
+    PID_Init(&pid_rate_roll,   0.15f, 0.0f, 0.008f, 200.0f);
+    PID_Init(&pid_rate_pitch,  0.0f, 0.0f, 0.0f, 200.0f);
+    PID_Init(&pid_rate_yaw,    0.00f, 0.0f, 0.0f, 200.0f);
 
     // ---------- 高度环（位置式 PID：TOF → 油门修正）----------
     PID_Init(&pid_height,      0.0f, 0.0f,  0.0f, 200.0f);
@@ -66,7 +66,6 @@ float PID_Realize(PID *pid, float measurement, float setpoint) {
     // 输出限幅
     if (pid->output >  pid->limit) pid->output =  pid->limit;
     if (pid->output < -pid->limit) pid->output = -pid->limit;
-
     return pid->output;
 }
 
